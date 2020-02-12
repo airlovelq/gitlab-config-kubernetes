@@ -1,0 +1,16 @@
+如果使用https，修改gitlab.rb
+external_url 'https://域名:10043'
+nginx['ssl_certificate'] = '/etc/gitlab/ssl/域名.crt'
+nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/域名.key'
+nginx['redirect_http_to_https'] = true
+nginx['listen_port'] = 443
+nginx['redirect_http_to_https_port'] = 80
+nginx['proxy_set_headers'] = {
+"Host" => "$http_host_with_default",
+"X-Real-IP" => "$remote_addr",
+"X-Forwarded-For" => "$proxy_add_x_forwarded_for",
+"X-Forwarded-Proto" => "https",
+"X-Forwarded-Ssl" => "on",
+"Upgrade" => "$http_upgrade",
+"Connection" => "$connection_upgrade"
+}
